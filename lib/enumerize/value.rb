@@ -15,6 +15,14 @@ module Enumerize
       @value
     end
 
+    def method_missing(method, *args, &block)
+      if @attr.data && @attr.data[self] && @attr.data[self].is_a?(Hash) && @attr.data[self].has_key?(method.to_s)
+        @attr.data[self].fetch(method.to_s)
+      else
+        super
+      end
+    end
+
     def text
       I18n.t(i18n_keys[0], :default => i18n_keys[1..-1])
     end
